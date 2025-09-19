@@ -1,337 +1,236 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="ja">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>SkyWay Tutorial</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>エネルギー - Renewable Energy Japan</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
         body {
-            background-color: #f5f5f5;
-            font-family: Arial, sans-serif;
+            color: #fff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        /* 视频容器 */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+        }
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease-in-out; /* 平滑切换 */
+        }
+        video.active {
+            opacity: 1;
+        }
+        /* 导航栏 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 50px;
             display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            z-index: 10;
+        }
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+        .navbar a:hover {
+            color: #00c4cc;
+        }
+        /* 英雄区 */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .container {
             text-align: center;
+            padding: 0 20px;
+            background: linear-gradient(to bottom, rgba(0, 40, 60, 0.5), rgba(0, 100, 120, 0.5));
         }
-
-        p {
-            color: #555;
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
         }
-
-        #my-id {
-            background-color: #8bc34a;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-weight: bold;
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin-bottom: 30px;
         }
-
-        input[type=text], button {
-            padding: 10px;
-            margin: 5px 0;
-        }
-
-        input[type=text] {
-            width: 70%;
+        .hero .cta {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            background: #00c4cc;
             border: none;
-            border-radius: 5px;
-            box-shadow: 0 0 15px -4px rgba(0, 0, 0, 0.1);
-        }
-
-        button {
-            background-color: #8bc34a;
-            border: none;
-            color: white;
+            color: #fff;
             border-radius: 5px;
             cursor: pointer;
+            transition: background 0.3s;
         }
-
-        button:hover {
-            background-color: #689f38;
+        .hero .cta:hover {
+            background: #0099a6;
         }
-
-        .video-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-
-        #local-video {
-            border: 8px solid #8bc34a;
-            border-radius: 5px;
+        /* 粒子动画 */
+        .particles {
+            position: fixed;
             width: 100%;
-            max-width: 400px;
-            margin-top: 20px;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
         }
-
-        .channel-group {
-            display: flex;
-            gap: 10px;
-        }
-
-        .switch {
-        position: relative;
-        display: inline-block;
-        width: 60px;
-        height: 34px;
-        }
-
-        .switch input { 
-        opacity: 0;
-        width: 0;
-        height: 0;
-        }
-
-        .slider {
-        position: absolute;
-        cursor: pointer;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: #ccc;
-        -webkit-transition: .4s;
-        transition: .4s;
-        }
-
-        .slider:before {
-        position: absolute;
-        content: "";
-        height: 26px;
-        width: 26px;
-        left: 4px;
-        bottom: 4px;
-        background-color: white;
-        -webkit-transition: .4s;
-        transition: .4s;
-        }
-
-        input:checked + .slider {
-        background-color:  #8bc34a;;
-        }
-
-        input:focus + .slider {
-        box-shadow: 0 0 1px  #8bc34a;;
-        }
-
-        input:checked + .slider:before {
-        -webkit-transform: translateX(26px);
-        -ms-transform: translateX(26px);
-        transform: translateX(26px);
-        }
-
-        .slider.round {
-        border-radius: 34px;
-        }
-
-        .slider.round:before {
-        border-radius: 50%;
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 10px;
+            }
+            .navbar a {
+                margin: 10px 0;
+            }
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
         }
     </style>
 </head>
-
 <body>
-    
-    <div class="container">
-        <h1>demo</h1>
-        <p>ID: <span id="my-id">Your ID</span></p>
-        <div class="channel-group">
-            <input id="channel-name" type="text" placeholder="キーワード" />
-            <button id="join">参加</button>
-        </div>
-
-        <label class="switch">
-            <input type="checkbox" id="videoToggle">
-            <span class="slider round"></span>
-        </label>
-        
-        <p id="status">カメラ OFF</p>
-        <video id="local-video" muted playsinline style="display: none;"></video>
-
-        <div id="remote-media-area"></div>
-
-        <div>
-            <input id="data-stream" type="text" placeholder="メッセージ" />
-            <button id="write">送信</button>
-        </div>
-
-        <div id="button-area"></div>
+    <!-- 视频容器，支持两个视频 -->
+    <div class="video-container">
+        <video id="video1" class="active" autoplay muted loop playsinline preload="metadata">
+            <source src="solar-panels-sunset.mp4" type="video/mp4"> <!-- 替换为“太阳能面板日落” -->
+        </video>
+        <video id="video2" autoplay muted loop playsinline preload="metadata">
+            <source src="offshore-wind-farm.mp4" type="video/mp4"> <!-- 替换为“海上风车群” -->
+        </video>
     </div>
 
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@skyway-sdk/room/dist/skyway_room-latest.js"></script>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div>
+            <a href="#home">ホーム</a>
+            <a href="#about">私たちについて</a>
+            <a href="#services">サービス</a>
+            <a href="#projects">プロジェクト</a>
+            <a href="#news">ニュース</a>
+            <a href="#contact">お問い合わせ</a>
+        </div>
+    </nav>
+
+    <!-- 英雄区 -->
+    <section class="hero">
+        <h1>エネルギーの未来を、つなぐ。</h1>
+        <p>持続可能な未来のために、日本発の再生可能エネルギーを推進します。</p>
+        <button class="cta" onclick="scrollToSection('contact')">お問い合わせ</button>
+    </section>
+
+    <!-- 粒子动画 -->
+    <canvas class="particles"></canvas>
+
     <script>
-    const { nowInSec, SkyWayAuthToken, SkyWayContext, SkyWayRoom, SkyWayStreamFactory, uuidV4 } = skyway_room;
+        // 粒子动画
+        const canvas = document.querySelector('.particles');
+        const ctx = canvas.getContext('2d');
 
-
-const token = new SkyWayAuthToken({
-jti: uuidV4(),
-iat: nowInSec(),
-exp: nowInSec() + 60 * 60 * 24,
-scope: {
-    app: {
-    id: "e5b9d8b9-ea5a-4363-88e5-c6a752fbab07",
-    turn: true,
-    actions: ['read'],
-    channels: [
-        {
-        id: '*',
-        name: '*',
-        actions: ['write'],
-        members: [
-            {
-            id: '*',
-            name: '*',
-            actions: ['write'],
-            publication: {
-                actions: ['write'],
-            },
-            subscription: {
-                actions: ['write'],
-            },
-            },
-        ],
-
-        sfuBots: [
-            {
-            actions: ['write'],
-            forwardings: [
-                {
-                actions: ['write'],
-                },
-            ],
-            },
-        ],
-        },
-    ],
-    },
-},
-}).encode("oX7Lfr2a7E23p03/CR+/PP+Yv7luE12GhsCWrMFlyOc=");
-
-document.addEventListener('DOMContentLoaded', async function() {
-    const videoToggle = document.getElementById('videoToggle');
-    const localVideo = document.getElementById('local-video');
-    const status = document.getElementById('status');
-    
-    videoToggle.addEventListener('change', async function() {
-        if (this.checked) {
-            localVideo.style.display = 'block';
-            status.textContent = 'カメラ ON';
-
-            // Wait for getUserMedia to complete
-            await initializeUserMedia(localVideo);
-        } else {
-            localVideo.style.display = 'none';
-            status.textContent = 'カメラ OFF';
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
-    });
-});
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-async function initializeUserMedia(localVideo) {
-    try {
-        const { audio, video } = await SkyWayStreamFactory.createMicrophoneAudioAndCameraStream();
-        video.attach(localVideo);
-        await localVideo.play();
-    } catch (error) {
-        console.error('Error initializing user media:', error);
-    }
-}
- 
-
-(async () => {
-const localVideo = document.getElementById('local-video');
-const buttonArea = document.getElementById('button-area');
-const remoteMediaArea = document.getElementById('remote-media-area');
-const channelNameInput = document.getElementById('channel-name');
-
-const dataStreamInput = document.getElementById('data-stream');
-
-const myId = document.getElementById('my-id');
-const joinButton = document.getElementById('join');
-const writeButton = document.getElementById('write');
-
-const { audio, video } =
-    await SkyWayStreamFactory.createMicrophoneAudioAndCameraStream();
-   video.attach(localVideo); 
-await localVideo.play();
-
-
-
-
-const data = await SkyWayStreamFactory.createDataStream();
-writeButton.onclick = () => {
-    data.write(dataStreamInput.value);
-    dataStreamInput.value = '';
-};
-
-joinButton.onclick = async () => {
-    if (channelNameInput.value === '') return;
-
-    const context = await SkyWayContext.Create(token);
-    const channel = await SkyWayRoom.FindOrCreate(context, {
-    type: 'p2p',
-    name: channelNameInput.value,
-    });
-    const me = await channel.join();
-
-    myId.textContent = me.id;
-
-    await me.publish(audio);
-    await me.publish(video);
-    await me.publish(data);
-
-    const subscribeAndAttach = (publication) => {
-    if (publication.publisher.id === me.id) return;
-
-    const subscribeButton = document.createElement('button');
-    subscribeButton.textContent = `${publication.publisher.id}: ${publication.contentType}`;
-    buttonArea.appendChild(subscribeButton);
-
-    subscribeButton.onclick = async () => {
-        const { stream } = await me.subscribe(publication.id);
-
-        switch (stream.contentType) {
-        case 'video':
-            {
-            const elm = document.createElement('video');
-            elm.playsInline = true;
-            elm.autoplay = true;
-            stream.attach(elm);
-            remoteMediaArea.appendChild(elm);
+        const particlesArray = [];
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
             }
-            break;
-        case 'audio':
-            {
-            const elm = document.createElement('audio');
-            elm.controls = true;
-            elm.autoplay = true;
-            stream.attach(elm);
-            remoteMediaArea.appendChild(elm);
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.1;
+                if (this.x < 0 || this.x > canvas.width) this.x = Math.random() * canvas.width;
+                if (this.y < 0 || this.y > canvas.height) this.y = Math.random() * canvas.height;
             }
-            break;
-        case 'data': {
-            const elm = document.createElement('div');
-            remoteMediaArea.appendChild(elm);
-            elm.innerText = 'data\n';
-            stream.onData.add((data) => {
-            elm.innerText += data + '\n';
-            });
+            draw() {
+                ctx.fillStyle = 'rgba(0, 196, 204, 0.8)';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
         }
+
+        function init() {
+            for (let i = 0; i < 100; i++) {
+                particlesArray.push(new Particle());
+            }
         }
-    };
-    };
+        init();
 
-    channel.publications.forEach(subscribeAndAttach);
-    channel.onStreamPublished.add((e) => subscribeAndAttach(e.publication));
-};
-})();
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+                if (particlesArray[i].size <= 0.2) {
+                    particlesArray.splice(i, 1);
+                    particlesArray.push(new Particle());
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
 
+        // 视频切换逻辑
+        const video1 = document.getElementById('video1');
+        const video2 = document.getElementById('video2');
+
+        function switchVideo() {
+            video1.classList.toggle('active');
+            video2.classList.toggle('active');
+        }
+
+        // 每10秒自动切换
+        setInterval(switchVideo, 10000);
+
+        // 平滑滚动
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
     </script>
 </body>
-
 </html>
