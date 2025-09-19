@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="日本発の再生可能エネルギー推進">
     <title>エネルギー - Renewable Energy Japan</title>
     <style>
         * {
@@ -16,7 +17,7 @@
             line-height: 1.6;
             overflow-x: hidden;
         }
-        /* 视频容器 */
+        /* 動画コンテナ */
         .video-container {
             position: fixed;
             top: 0;
@@ -34,12 +35,12 @@
             height: 100%;
             object-fit: cover;
             opacity: 0;
-            transition: opacity 1s ease-in-out; /* 平滑切换 */
+            transition: opacity 1s ease-in-out;
         }
         video.active {
             opacity: 1;
         }
-        /* 导航栏 */
+        /* ナビゲーションバー */
         .navbar {
             position: fixed;
             top: 0;
@@ -52,15 +53,65 @@
             backdrop-filter: blur(5px);
             z-index: 10;
         }
+        .navbar .logo {
+            height: 40px;
+            filter: brightness(1.5) drop-shadow(0 0 5px #000); /* ロゴを強調 */
+        }
+        .navbar .company {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #E0E0E0; /* 明るいグレーでコントラスト改善 */
+            margin-left: 10px;
+            transition: color 0.3s;
+        }
+        .navbar .company:hover {
+            color: #fff;
+        }
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+        }
         .navbar a {
             color: #fff;
             text-decoration: none;
             margin: 0 15px;
             font-size: 16px;
-            transition: color 0.3s;
+            transition: color 0.3s, transform 0.3s;
+            position: relative;
         }
         .navbar a:hover {
             color: #00c4cc;
+            transform: scale(1.1);
+        }
+        .navbar a:hover::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #00c4cc;
+            animation: underline 0.3s ease-in-out;
+        }
+        @keyframes underline {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        /* 言語選択 */
+        .lang-switch {
+            margin-left: 20px;
+        }
+        .lang-switch select {
+            background: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            border: 1px solid #00c4cc;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .lang-switch select:hover {
+            background: rgba(0, 0, 0, 0.7);
         }
         /* 英雄区 */
         .hero {
@@ -97,7 +148,7 @@
         .hero .cta:hover {
             background: #0099a6;
         }
-        /* 粒子动画 */
+        /* 粒子アニメーション */
         .particles {
             position: fixed;
             width: 100%;
@@ -107,14 +158,55 @@
             pointer-events: none;
             z-index: 0;
         }
-        /* 响应式 */
+        /* 連絡フォーム */
+        .contact {
+            padding: 50px 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        .contact form {
+            display: flex;
+            flex-direction: column;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .contact input, .contact textarea {
+            margin: 10px 0;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        .contact button {
+            padding: 10px;
+            background: #00c4cc;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        /* フッター */
+        footer {
+            padding: 20px;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            margin-top: 50px;
+        }
+        footer a {
+            color: #00c4cc;
+            margin: 0 10px;
+        }
+        /* レスポンシブ */
         @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
                 padding: 10px;
             }
+            .navbar .nav-links {
+                flex-direction: column;
+                margin-top: 10px;
+            }
             .navbar a {
-                margin: 10px 0;
+                margin: 5px 0;
             }
             .hero h1 {
                 font-size: 2rem;
@@ -126,40 +218,67 @@
     </style>
 </head>
 <body>
-    <!-- 视频容器，支持两个视频 -->
+    <!-- 動画コンテナ -->
     <div class="video-container">
         <video id="video1" class="active" autoplay muted loop playsinline preload="metadata">
-            <source src="solar-panels-sunset.mp4" type="video/mp4"> <!-- 替换为“太阳能面板日落” -->
+            <source src="solar-panels-sunset.mp4" type="video/mp4">
         </video>
         <video id="video2" autoplay muted loop playsinline preload="metadata">
-            <source src="offshore-wind-farm.mp4" type="video/mp4"> <!-- 替换为“海上风车群” -->
+            <source src="offshore-wind-farm.mp4" type="video/mp4">
         </video>
     </div>
 
-    <!-- 导航栏 -->
+    <!-- ナビゲーションバー -->
     <nav class="navbar">
-        <div>
+        <div style="display: flex; align-items: center;">
+            <img src="logo.png" alt="エナリックス・ジャパン ロゴ" class="logo">
+            <a href="#home" class="company" onclick="scrollToSection('home')">エナリックス・ジャパン</a>
+        </div>
+        <div class="nav-links">
             <a href="#home">ホーム</a>
             <a href="#about">私たちについて</a>
             <a href="#services">サービス</a>
             <a href="#projects">プロジェクト</a>
             <a href="#news">ニュース</a>
             <a href="#contact">お問い合わせ</a>
+            <div class="lang-switch">
+                <select onchange="changeLanguage(this.value)">
+                    <option value="ja">日本語</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
         </div>
     </nav>
 
     <!-- 英雄区 -->
-    <section class="hero">
+    <section class="hero" id="home">
         <h1>エネルギーの未来を、つなぐ。</h1>
         <p>持続可能な未来のために、日本発の再生可能エネルギーを推進します。</p>
         <button class="cta" onclick="scrollToSection('contact')">お問い合わせ</button>
     </section>
 
-    <!-- 粒子动画 -->
+    <!-- 連絡フォーム -->
+    <section class="contact" id="contact">
+        <h2>お問い合わせ</h2>
+        <form name="contact" method="POST" data-netlify="true">
+            <input type="text" name="name" placeholder="お名前" required>
+            <input type="email" name="email" placeholder="メールアドレス" required>
+            <textarea name="message" placeholder="メッセージ" required></textarea>
+            <button type="submit">送信</button>
+        </form>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <p>〒123-4567 東京 電話: 03-1234-5678 メール: info@enarix-japan.com</p>
+        <a href="https://x.com">X</a> <a href="https://linkedin.com">LinkedIn</a>
+    </footer>
+
+    <!-- 粒子アニメーション -->
     <canvas class="particles"></canvas>
 
     <script>
-        // 粒子动画
+        // 粒子アニメーション
         const canvas = document.querySelector('.particles');
         const ctx = canvas.getContext('2d');
 
@@ -215,7 +334,7 @@
         }
         animate();
 
-        // 视频切换逻辑
+        // 動画切り替えロジック
         const video1 = document.getElementById('video1');
         const video2 = document.getElementById('video2');
 
@@ -224,12 +343,31 @@
             video2.classList.toggle('active');
         }
 
-        // 每10秒自动切换
         setInterval(switchVideo, 10000);
 
-        // 平滑滚动
+        // 平滑スクロール
         function scrollToSection(id) {
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 言語切替
+        function changeLanguage(lang) {
+            const elements = {
+                ja: {
+                    h1: 'エネルギーの未来を、つなぐ。',
+                    p: '持続可能な未来のために、日本発の再生可能エネルギーを推進します。',
+                    cta: 'お問い合わせ'
+                },
+                en: {
+                    h1: 'Connecting the Future of Energy.',
+                    p: 'Promoting Japan-originated renewable energy for a sustainable future.',
+                    cta: 'Contact Us'
+                }
+            };
+            document.querySelector('.hero h1').textContent = elements[lang].h1;
+            document.querySelector('.hero p').textContent = elements[lang].p;
+            document.querySelector('.hero .cta').textContent = elements[lang].cta;
+            document.documentElement.lang = lang;
         }
     </script>
 </body>
