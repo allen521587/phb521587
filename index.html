@@ -55,12 +55,12 @@
         }
         .navbar .logo {
             height: 40px;
-            filter: brightness(1.5) drop-shadow(0 0 5px #000); /* ロゴを強調 */
+            filter: brightness(1.5) drop-shadow(0 0 5px #000);
         }
         .navbar .company {
             font-size: 1.5rem;
             font-weight: bold;
-            color: #E0E0E0; /* 明るいグレーでコントラスト改善 */
+            color: #E0E0E0;
             margin-left: 10px;
             transition: color 0.3s;
         }
@@ -97,6 +97,12 @@
             from { width: 0; }
             to { width: 100%; }
         }
+        /* ハンバーガーメニュー */
+        .menu-toggle {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
         /* 言語選択 */
         .lang-switch {
             margin-left: 20px;
@@ -113,9 +119,16 @@
         .lang-switch select:hover {
             background: rgba(0, 0, 0, 0.7);
         }
+        /* セクション共通スタイル */
+        section {
+            padding: 50px 20px;
+            min-height: 100vh;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.5);
+        }
         /* 英雄区 */
         .hero {
-            height: 100vh;
+            height: 100vh; /* 1画面に固定 */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -148,22 +161,7 @@
         .hero .cta:hover {
             background: #0099a6;
         }
-        /* 粒子アニメーション */
-        .particles {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            z-index: 0;
-        }
         /* 連絡フォーム */
-        .contact {
-            padding: 50px 20px;
-            text-align: center;
-            background: rgba(0, 0, 0, 0.5);
-        }
         .contact form {
             display: flex;
             flex-direction: column;
@@ -195,24 +193,45 @@
             color: #00c4cc;
             margin: 0 10px;
         }
+        /* 粒子アニメーション */
+        .particles {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
         /* レスポンシブ */
         @media (max-width: 768px) {
             .navbar {
                 flex-direction: column;
                 padding: 10px;
             }
+            .menu-toggle {
+                display: block;
+            }
             .navbar .nav-links {
+                display: none;
                 flex-direction: column;
-                margin-top: 10px;
+                width: 100%;
+                position: absolute;
+                top: 60px;
+                left: 0;
+                background: rgba(0, 0, 0, 0.9);
+                padding: 20px 0;
+            }
+            .navbar .nav-links.active {
+                display: flex;
             }
             .navbar a {
-                margin: 5px 0;
+                margin: 10px 0;
+                width: 100%;
+                text-align: center;
             }
-            .hero h1 {
-                font-size: 2rem;
-            }
-            .hero p {
-                font-size: 1rem;
+            .lang-switch {
+                margin: 10px 0;
             }
         }
     </style>
@@ -234,6 +253,7 @@
             <img src="logo.png" alt="エナリックス・ジャパン ロゴ" class="logo">
             <a href="#home" class="company" onclick="scrollToSection('home')">エナリックス・ジャパン</a>
         </div>
+        <div class="menu-toggle">☰</div> <!-- ハンバーガーメニュー -->
         <div class="nav-links">
             <a href="#home">ホーム</a>
             <a href="#about">私たちについて</a>
@@ -255,6 +275,30 @@
         <h1>エネルギーの未来を、つなぐ。</h1>
         <p>持続可能な未来のために、日本発の再生可能エネルギーを推進します。</p>
         <button class="cta" onclick="scrollToSection('contact')">お問い合わせ</button>
+    </section>
+
+    <!-- About セクション -->
+    <section id="about">
+        <h2>私たちについて</h2>
+        <p>エナリックス・ジャパンは、持続可能なエネルギーソリューションを提供するリーディングカンパニーです。</p>
+    </section>
+
+    <!-- Services セクション -->
+    <section id="services">
+        <h2>サービス</h2>
+        <p>再生可能エネルギー分野でのEPC、O&M、グリッド接続サービスを提供します。</p>
+    </section>
+
+    <!-- Projects セクション -->
+    <section id="projects">
+        <h2>プロジェクト</h2>
+        <p>太陽光、風力、水力発電プロジェクトの実績を誇ります。</p>
+    </section>
+
+    <!-- News セクション -->
+    <section id="news">
+        <h2>ニュース</h2>
+        <p>最新のエネルギー関連ニュースをこちらでご覧ください。</p>
     </section>
 
     <!-- 連絡フォーム -->
@@ -356,19 +400,42 @@
                 ja: {
                     h1: 'エネルギーの未来を、つなぐ。',
                     p: '持続可能な未来のために、日本発の再生可能エネルギーを推進します。',
-                    cta: 'お問い合わせ'
+                    cta: 'お問い合わせ',
+                    about: '私たちについて',
+                    services: 'サービス',
+                    projects: 'プロジェクト',
+                    news: 'ニュース',
+                    contact: 'お問い合わせ'
                 },
                 en: {
                     h1: 'Connecting the Future of Energy.',
                     p: 'Promoting Japan-originated renewable energy for a sustainable future.',
-                    cta: 'Contact Us'
+                    cta: 'Contact Us',
+                    about: 'About Us',
+                    services: 'Services',
+                    projects: 'Projects',
+                    news: 'News',
+                    contact: 'Contact'
                 }
             };
             document.querySelector('.hero h1').textContent = elements[lang].h1;
             document.querySelector('.hero p').textContent = elements[lang].p;
             document.querySelector('.hero .cta').textContent = elements[lang].cta;
+            document.querySelector('#about h2').textContent = elements[lang].about;
+            document.querySelector('#services h2').textContent = elements[lang].services;
+            document.querySelector('#projects h2').textContent = elements[lang].projects;
+            document.querySelector('#news h2').textContent = elements[lang].news;
+            document.querySelector('#contact h2').textContent = elements[lang].contact;
             document.documentElement.lang = lang;
         }
+
+        // ハンバーガーメニュー機能
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
     </script>
 </body>
 </html>
