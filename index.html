@@ -102,6 +102,10 @@
             display: none;
             font-size: 24px;
             cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .menu-toggle.close {
+            transform: rotate(45deg); /* ×に変形 */
         }
         /* 言語選択 */
         .lang-switch {
@@ -128,7 +132,7 @@
         }
         /* 英雄区 */
         .hero {
-            height: 100vh; /* 1画面に固定 */
+            height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -434,7 +438,8 @@
         const navLinks = document.querySelector('.nav-links');
 
         menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+            const isActive = navLinks.classList.toggle('active');
+            menuToggle.classList.toggle('close', isActive); // ×に切り替え
         });
     </script>
 </body>
